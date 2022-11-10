@@ -1,0 +1,13 @@
+<div class="checkout-item-container">
+  <div class="image-container">
+    <img mat-card-image [src]="item.imageUrl" [alt]="item.title" />
+  </div>
+  <span class="title">{{ item.title }}</span>
+  <span class="quantity">
+    <div class="arrow" (click)="removeItem()">&#10094;</div>
+    <span class="value">{{ item.quantity }}</span>
+    <div class="arrow" (click)="addItem()">&#10095;</div>
+  </span>
+  <span class="price"> {{ item.price }}$</span>
+  <div class="remove-button" (click)="clearItem()">&#10005;</div>
+</div>

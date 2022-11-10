@@ -1,0 +1,27 @@
+mat-card {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+
+  &:hover {
+    button {
+      opacity: 0.85;
+    }
+  }
+}
+
+mat-card-title,
+mat-card-subtitle {
+  align-self: center;
+}
+
+img {
+  align-self: center;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+}
+
+mat-card-actions {
+  align-self: center;
+}
