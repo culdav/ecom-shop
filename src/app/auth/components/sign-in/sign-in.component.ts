@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -14,9 +15,15 @@ export class SignInComponent implements OnInit {
     password: new FormControl(''),
   });
 
-  constructor() {}
+  constructor(public authService: AuthService) {}
 
   ngOnInit(): void {}
 
-  signIn(): void {}
+  signIn(): void {
+    this.authService.signIn(this.form.value.email, this.form.value.password);
+  }
+
+  googleSignIn(): void {
+    this.authService.googleAuth();
+  }
 }
