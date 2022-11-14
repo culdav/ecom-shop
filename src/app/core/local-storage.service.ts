@@ -3,7 +3,16 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
+  static instances = 0;
   userValue = new BehaviorSubject(this.user);
+
+  constructor() {
+    LocalStorageService.instances++;
+    console.log(
+      'LocalStorageService instances:',
+      LocalStorageService.instances
+    );
+  }
 
   set user(value) {
     this.userValue.next(value);

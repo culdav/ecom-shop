@@ -6,43 +6,34 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { LocalStorageService } from 'src/app/shared/services/local-storage.service';
+import { LocalStorageService } from 'src/app/core/local-storage.service';
 
 interface UserInfo {
   displayName: string;
   createdAt: Date;
 }
 
-@Injectable({ providedIn: 'any' })
+@Injectable({ providedIn: 'root' })
 export class AuthService {
   userData: any;
   static instances = 0;
 
   constructor(
-    public afs: AngularFirestore,
-    public afAuth: AngularFireAuth,
-    public router: Router,
+    private afs: AngularFirestore,
+    private afAuth: AngularFireAuth,
+    private router: Router,
     private localStorageService: LocalStorageService
   ) {
     AuthService.instances++;
-    console.log('Auth service instances:', AuthService.instances);
-    this.afAuth.authState.subscribe((user) => {
-      if (user) {
-        this.userData = user;
-        localStorageService.user = JSON.stringify(this.userData);
-      } else {
-        localStorageService.user = 'null';
-      }
-    });
+    console.log('AuthService instances:', AuthService.instances);
+    this.listenToAuthChanges();
   }
 
   signIn(email: string, password: string) {
     return this.afAuth
       .signInWithEmailAndPassword(email, password)
-      .then((result) => {
-        this.setUserData(result.user);
+      .then((_) => {
         this.afAuth.authState.subscribe((user) => {
-          console.log('user', user);
           if (user) {
             this.router.navigate(['shop']);
           }
@@ -81,15 +72,15 @@ export class AuthService {
     });
   }
 
-  private authLogin(provider: any) {
-    return this.afAuth
-      .signInWithPopup(provider)
-      .then((result) => {
-        this.router.navigate(['shop']);
-      })
-      .catch((error) => {
-        window.alert(error);
-      });
+  private listenToAuthChanges(): void {
+    this.afAuth.authState.subscribe((user) => {
+      if (user) {
+        this.userData = user;
+        this.localStorageService.user = JSON.stringify(this.userData);
+      } else {
+        this.localStorageService.user = 'null';
+      }
+    });
   }
 
   private setUserData(user: any, additionalInformation?: UserInfo) {
@@ -105,5 +96,16 @@ export class AuthService {
     return userRef.set(userData, {
       merge: true,
     });
+  }
+
+  private authLogin(provider: any) {
+    return this.afAuth
+      .signInWithPopup(provider)
+      .then((_) => {
+        this.router.navigate(['shop']);
+      })
+      .catch((error) => {
+        window.alert(error);
+      });
   }
 }

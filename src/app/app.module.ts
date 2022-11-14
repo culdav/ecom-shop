@@ -1,4 +1,5 @@
-import { AuthService } from './auth/services/auth.service';
+import { CoreModule } from './core/core.module';
+import { AuthService } from './core/auth.service';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,6 +21,7 @@ import { environment } from '../environments/environment';
     BrowserAnimationsModule,
     NavigationModule,
     AppRoutingModule,
+    CoreModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireAuthModule,
     AngularFirestoreModule,
