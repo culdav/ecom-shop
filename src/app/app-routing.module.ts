@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ShopModule } from './shop/shop.module';
 
 const routes: Routes = [
   { path: '', redirectTo: '/shop', pathMatch: 'full' },
   {
     path: 'shop',
-    loadChildren: () => import('./shop/shop.module').then((m) => m.ShopModule),
+    loadChildren: () => ShopModule,
   },
   {
     path: 'auth',

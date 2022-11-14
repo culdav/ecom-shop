@@ -13,9 +13,10 @@ interface UserInfo {
   createdAt: Date;
 }
 
-@Injectable({ providedIn: 'root' })
+@Injectable({ providedIn: 'any' })
 export class AuthService {
   userData: any;
+  static instances = 0;
 
   constructor(
     public afs: AngularFirestore,
@@ -23,14 +24,14 @@ export class AuthService {
     public router: Router,
     private localStorageService: LocalStorageService
   ) {
+    AuthService.instances++;
+    console.log('Auth service instances:', AuthService.instances);
     this.afAuth.authState.subscribe((user) => {
       if (user) {
         this.userData = user;
         localStorageService.user = JSON.stringify(this.userData);
-        JSON.parse(localStorage.getItem('user')!);
       } else {
         localStorageService.user = 'null';
-        JSON.parse(localStorage.getItem('user')!);
       }
     });
   }
@@ -75,13 +76,9 @@ export class AuthService {
   }
 
   googleAuth() {
-    return this.afAuth
-      .signInWithPopup(new auth.GoogleAuthProvider())
-      .then((res: any) => console.log('Logged in with google'))
-      .then((result) => this.router.navigate(['shop']))
-      .catch((error) => {
-        window.alert(error);
-      });
+    return this.authLogin(new auth.GoogleAuthProvider()).then((res: any) => {
+      this.router.navigate(['shop']);
+    });
   }
 
   private authLogin(provider: any) {
