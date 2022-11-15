@@ -1,22 +1,33 @@
-import { AppState } from './../shared/redux/app.state';
-import { GetUser } from './../shared/redux/user/user.actions';
-import { AuthService } from '../core/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LocalStorageService } from '@app/core/local-storage.service';
-import { Subject, takeUntil, Observable } from 'rxjs';
-import { User } from '@app/shared/model';
-import { Select } from '@ngxs/store';
+import { User, CheckoutItem } from '@app/shared/model';
+import { Store } from '@ngxs/store';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../core/auth.service';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent implements OnInit {
-  @Select(AppState.getUser) user$!: Observable<User>;
-  @Select(AppState.getCheckoutItemsCount) checkoutCount$!: Observable<number>;
+export class NavigationComponent implements OnInit, OnDestroy {
+  private storeSubscription!: Subscription;
 
-  constructor(public authService: AuthService) {}
+  user: User | null = null;
+  checkoutItemsCount: number = 0;
 
-  ngOnInit(): void {}
+  constructor(public authService: AuthService, private store: Store) {}
+
+  ngOnInit(): void {
+    this.storeSubscription = this.store.subscribe((state) => {
+      this.user = state.shop.user || null;
+      this.checkoutItemsCount = state.shop.checkout.reduce(
+        (total: number, item: CheckoutItem) => total + item.quantity,
+        0
+      );
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.storeSubscription.unsubscribe();
+  }
 }
