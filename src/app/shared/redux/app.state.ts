@@ -145,13 +145,13 @@ export class AppState {
       updatedItems = checkoutItems.filter(
         (item) => item.id !== action.productId
       );
+    } else {
+      updatedItems = checkoutItems.map((item) =>
+        item.id === action.productId
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      );
     }
-
-    updatedItems = checkoutItems.map((item) =>
-      item.id === action.productId
-        ? { ...item, quantity: item.quantity - 1 }
-        : item
-    );
 
     patchState({
       ...getState(),
