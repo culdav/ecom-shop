@@ -5,20 +5,22 @@
     <div class>
       <a mat-button routerLink="/shop" routerLinkActive="active">Shop</a>
       <a
-        *ngIf="(localStorageService.userValue | async) === 'null'"
+        *ngIf="(user$ | async) === null"
         mat-button
         routerLink="/auth"
         routerLinkActive="active"
         >Sign In</a
       >
       <a
-        *ngIf="(localStorageService.userValue | async) !== 'null'"
+        *ngIf="(user$ | async) !== null"
         mat-button
         (click)="authService.signOut()"
         >Sign Out</a
       >
       <a mat-button routerLink="/checkout" routerLinkActive="active">
-        <mat-icon matBadge="4" matBadgeColor="warn">shopping_cart</mat-icon>
+        <mat-icon [matBadge]="checkoutCount$ | async" matBadgeColor="warn"
+          >shopping_cart</mat-icon
+        >
       </a>
     </div>
   </mat-toolbar-row>

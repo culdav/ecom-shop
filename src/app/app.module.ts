@@ -1,3 +1,4 @@
+import { AppState } from './shared/redux/app.state';
 import { CoreModule } from './core/core.module';
 import { AuthService } from './core/auth.service';
 import { NgModule } from '@angular/core';
@@ -13,6 +14,8 @@ import { AngularFireStorageModule } from '@angular/fire/compat/storage';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
 import { AngularFireDatabaseModule } from '@angular/fire/compat/database';
 import { environment } from '../environments/environment';
+import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 @NgModule({
   declarations: [AppComponent],
@@ -27,6 +30,10 @@ import { environment } from '../environments/environment';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
+    NgxsModule.forRoot([AppState], {
+      developmentMode: !environment.production,
+    }),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
   ],
   providers: [AuthService],
   bootstrap: [AppComponent],

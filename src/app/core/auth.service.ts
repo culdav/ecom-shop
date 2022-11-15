@@ -1,3 +1,6 @@
+import { User } from './../shared/model/user.model';
+import { ClearUser, SetUser } from './../shared/redux/user/user.actions';
+import { Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import * as auth from 'firebase/auth';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -6,7 +9,6 @@ import {
   AngularFirestoreDocument,
 } from '@angular/fire/compat/firestore';
 import { Router } from '@angular/router';
-import { LocalStorageService } from 'src/app/core/local-storage.service';
 
 interface UserInfo {
   displayName: string;
@@ -22,7 +24,7 @@ export class AuthService {
     private afs: AngularFirestore,
     private afAuth: AngularFireAuth,
     private router: Router,
-    private localStorageService: LocalStorageService
+    private store: Store
   ) {
     AuthService.instances++;
     console.log('AuthService instances:', AuthService.instances);
@@ -61,7 +63,6 @@ export class AuthService {
 
   signOut() {
     return this.afAuth.signOut().then(() => {
-      this.localStorageService.user = null;
       this.router.navigate(['auth']);
     });
   }
@@ -75,10 +76,14 @@ export class AuthService {
   private listenToAuthChanges(): void {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
-        this.userData = user;
-        this.localStorageService.user = JSON.stringify(this.userData);
+        const currentUser: User = {
+          id: user.uid,
+          email: user.email || '',
+          displayName: user.displayName || '',
+        };
+        this.store.dispatch(new SetUser(currentUser));
       } else {
-        this.localStorageService.user = 'null';
+        this.store.dispatch(new ClearUser());
       }
     });
   }

@@ -1,6 +1,7 @@
 <div class="grid-container">
+  <p *ngIf="(items$ | async)?.length === 0">Your cart is empty.</p>
   <mat-grid-list cols="1" rowHeight="5:1">
-    <ng-container *ngFor="let item of items">
+    <ng-container *ngFor="let item of items$ | async">
       <mat-grid-tile>
         <app-checkout-item [item]="item"></app-checkout-item>
       </mat-grid-tile>

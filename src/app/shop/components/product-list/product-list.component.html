@@ -1,12 +1,9 @@
+<p *ngIf="loading$ | async">Loading...</p>
 <div class="grid-container">
   <mat-grid-list cols="4" rowHeight="2:3">
-    <ng-container *ngFor="let product of products">
+    <ng-container *ngFor="let product of products$ | async">
       <mat-grid-tile>
-        <app-product-card
-          [title]="product.title"
-          [imageUrl]="product.imageUrl"
-          [price]="product.price"
-        ></app-product-card>
+        <app-product-card [product]="product"></app-product-card>
       </mat-grid-tile>
     </ng-container>
   </mat-grid-list>

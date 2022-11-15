@@ -1,3 +1,6 @@
+import { AddCheckoutItem } from './../../../shared/redux/checkout/checkout.actions';
+import { Store } from '@ngxs/store';
+import { Product } from '@app/shared/model';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -7,13 +10,13 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class ProductCardComponent implements OnInit {
   @Input()
-  title: string = '';
-  @Input()
-  imageUrl: string = '';
-  @Input()
-  price: number | undefined;
+  product!: Product;
 
-  constructor() {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {}
+
+  addToCart(): void {
+    this.store.dispatch(new AddCheckoutItem(this.product));
+  }
 }

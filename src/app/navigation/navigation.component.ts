@@ -1,33 +1,22 @@
+import { AppState } from './../shared/redux/app.state';
+import { GetUser } from './../shared/redux/user/user.actions';
 import { AuthService } from '../core/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LocalStorageService } from '@app/core/local-storage.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil, Observable } from 'rxjs';
+import { User } from '@app/shared/model';
+import { Select } from '@ngxs/store';
 
 @Component({
   selector: 'app-nav',
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss'],
 })
-export class NavigationComponent implements OnInit, OnDestroy {
-  // private destroy$: Subject<void> = new Subject<void>();
-  // signedIn: boolean = false;
+export class NavigationComponent implements OnInit {
+  @Select(AppState.getUser) user$!: Observable<User>;
+  @Select(AppState.getCheckoutItemsCount) checkoutCount$!: Observable<number>;
 
-  constructor(
-    public authService: AuthService,
-    public localStorageService: LocalStorageService
-  ) {}
+  constructor(public authService: AuthService) {}
 
-  ngOnInit(): void {
-    // this.localStorageService.userValue
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((user) => {
-    //     this.signedIn = user !== 'null' ? true : false;
-    //   });
-  }
-
-  ngOnDestroy(): void {
-    // this.destroy$.next();
-    // this.destroy$.complete();
-    // this.destroy$.unsubscribe();
-  }
+  ngOnInit(): void {}
 }
