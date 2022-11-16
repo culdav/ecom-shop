@@ -11,14 +11,11 @@ import { Observable } from 'rxjs';
 })
 export class ProductListComponent implements OnInit {
   @Input()
-  category: string = '';
+  products: Array<Product> = [];
 
   @Select(AppState.getLoading) loading$!: Observable<boolean>;
-  @Select(AppState.fetchProducts) products$!: Observable<Array<Product>>;
 
-  constructor(private store: Store) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.store.dispatch(new FetchProducts(this.category));
-  }
+  ngOnInit(): void {}
 }

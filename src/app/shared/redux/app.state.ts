@@ -16,6 +16,9 @@ export interface AppStateModel {
   loading: boolean;
   user: User | null;
   products: Array<Product>;
+  menProducts: Array<Product>;
+  womenProducts: Array<Product>;
+  kidsProducts: Array<Product>;
   checkout: Array<CheckoutItem>;
 }
 
@@ -23,6 +26,9 @@ const defaults: AppStateModel = {
   loading: false,
   user: null,
   products: [],
+  menProducts: [],
+  womenProducts: [],
+  kidsProducts: [],
   checkout: [],
 };
 
@@ -47,6 +53,21 @@ export class AppState {
   }
 
   @Selector()
+  static menProducts(state: AppStateModel): Array<Product> {
+    return state.menProducts;
+  }
+
+  @Selector()
+  static womenProducts(state: AppStateModel): Array<Product> {
+    return state.womenProducts;
+  }
+
+  @Selector()
+  static kidsProducts(state: AppStateModel): Array<Product> {
+    return state.kidsProducts;
+  }
+
+  @Selector()
   static getUser(state: AppStateModel): User | null {
     return state.user;
   }
@@ -62,14 +83,14 @@ export class AppState {
   }
 
   @Action(FetchProducts)
-  getProducst(
-    { getState, patchState }: StateContext<AppStateModel>,
-    action: FetchProducts
-  ) {
-    this.productService.fetchProducts(action.category).then((res) => {
+  getProducst({ getState, patchState }: StateContext<AppStateModel>) {
+    this.productService.fetchProducts().then((res) => {
       patchState({
         ...getState(),
         products: res,
+        menProducts: res.filter((item) => item.category === 'men'),
+        womenProducts: res.filter((item) => item.category === 'women'),
+        kidsProducts: res.filter((item) => item.category === 'kids'),
       });
     });
   }

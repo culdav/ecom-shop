@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User, CheckoutItem } from '@app/shared/model';
+import { CheckoutItem, User } from '@app/shared/model';
 import { Store } from '@ngxs/store';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../core/auth.service';
@@ -20,6 +20,9 @@ export class NavigationComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.storeSubscription = this.store.subscribe((state) => {
       this.user = state.shop.user || null;
+    });
+
+    this.store.select((state) => {
       this.checkoutItemsCount = state.shop.checkout.reduce(
         (total: number, item: CheckoutItem) => total + item.quantity,
         0

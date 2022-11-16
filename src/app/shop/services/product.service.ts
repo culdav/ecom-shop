@@ -5,11 +5,9 @@ import { Product } from '@app/shared/model';
 export class ProductService {
   constructor() {}
 
-  fetchProducts(category: string): Promise<Array<Product>> {
+  fetchProducts(): Promise<Array<Product>> {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve(SHOP_DATA.filter((p) => p.category === category));
-      }, 1000);
+      resolve(SHOP_DATA);
     });
   }
 }

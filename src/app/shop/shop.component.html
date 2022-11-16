@@ -1,11 +1,11 @@
 <mat-tab-group mat-stretch-tabs animationDuration="0ms">
   <mat-tab label="Men"
-    ><app-product-list category="men"></app-product-list
+    ><app-product-list [products]="menProducts"></app-product-list
   ></mat-tab>
   <mat-tab label="Women"
-    ><app-product-list category="women"></app-product-list
+    ><app-product-list [products]="womenProducts"></app-product-list
   ></mat-tab>
   <mat-tab label="Kids"
-    ><app-product-list category="kids"></app-product-list
+    ><app-product-list [products]="kidsProducts"></app-product-list
   ></mat-tab>
 </mat-tab-group>
