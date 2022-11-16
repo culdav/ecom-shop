@@ -3,4 +3,5 @@ export interface User {
   email: string;
   displayName: string;
   createdAt?: Date;
+  loggedIn: boolean;
 }

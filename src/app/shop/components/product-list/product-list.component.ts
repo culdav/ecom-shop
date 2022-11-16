@@ -1,24 +1,24 @@
-import { AppState } from './../../../shared/redux/app.state';
-import { Component, Input, OnInit } from '@angular/core';
-import { Product } from '@app/shared/model';
-import { FetchProducts } from '@app/shared/redux/shop/shop.actions';
-import { Select, Store } from '@ngxs/store';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { Select } from '@ngxs/store';
+import { AppState } from '@redux/app.state';
+import { Product, ProductSelectors } from '@redux/product';
 import { Observable } from 'rxjs';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent implements OnInit {
   @Input()
-  category: string = '';
+  products$!: Observable<Product[]>;
 
   @Select(AppState.getLoading) loading$!: Observable<boolean>;
-  @Select(AppState.fetchProducts) products$!: Observable<Array<Product>>;
 
-  constructor(private store: Store) {}
-
-  ngOnInit(): void {
-    this.store.dispatch(new FetchProducts(this.category));
-  }
+  ngOnInit(): void {}
 }

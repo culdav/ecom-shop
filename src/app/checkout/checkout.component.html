@@ -1,10 +1,15 @@
-<div class="grid-container">
+<div class="checkout-container">
   <p *ngIf="(items$ | async)?.length === 0">Your cart is empty.</p>
-  <mat-grid-list cols="1" rowHeight="5:1">
-    <ng-container *ngFor="let item of items$ | async">
-      <mat-grid-tile>
-        <app-checkout-item [item]="item"></app-checkout-item>
-      </mat-grid-tile>
-    </ng-container>
-  </mat-grid-list>
+  <div class="grid-container">
+    <mat-grid-list cols="1" rowHeight="5:1">
+      <ng-container *ngFor="let item of items$ | async">
+        <mat-grid-tile>
+          <app-checkout-item [item]="item"></app-checkout-item>
+        </mat-grid-tile>
+      </ng-container>
+    </mat-grid-list>
+  </div>
+  <h2 class="footer-label" *ngIf="(totalPrice$ | async)! > 0">
+    Total: {{ totalPrice$ | async }}$
+  </h2>
 </div>

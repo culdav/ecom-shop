@@ -1,11 +1,9 @@
-import { AppState } from './../shared/redux/app.state';
-import { GetUser } from './../shared/redux/user/user.actions';
-import { AuthService } from '../core/auth.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LocalStorageService } from '@app/core/local-storage.service';
-import { Subject, takeUntil, Observable } from 'rxjs';
-import { User } from '@app/shared/model';
+import { Component, OnInit } from '@angular/core';
 import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { AuthService } from '@app/core/auth.service';
+import { CheckoutSelectors } from '@redux/checkout';
+import { User, UserSelectors } from '@redux/user';
 
 @Component({
   selector: 'app-nav',
@@ -13,8 +11,9 @@ import { Select } from '@ngxs/store';
   styleUrls: ['./navigation.component.scss'],
 })
 export class NavigationComponent implements OnInit {
-  @Select(AppState.getUser) user$!: Observable<User>;
-  @Select(AppState.getCheckoutItemsCount) checkoutCount$!: Observable<number>;
+  @Select(UserSelectors.getUserLoggedIn) loggedIn$!: Observable<boolean>;
+  @Select(CheckoutSelectors.getCheckoutItemsCount)
+  checkoutCount$!: Observable<number>;
 
   constructor(public authService: AuthService) {}
 

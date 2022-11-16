@@ -1,4 +1,7 @@
+import { Select, Store } from '@ngxs/store';
 import { Component, OnInit } from '@angular/core';
+import { FetchProducts, Product, ProductSelectors } from '@redux/product';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-shop',
@@ -6,7 +9,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./shop.component.scss'],
 })
 export class ShopComponent implements OnInit {
-  constructor() {}
+  constructor(private store: Store) {}
 
-  ngOnInit(): void {}
+  @Select(ProductSelectors.getProductsByCategory('men'))
+  menProducts$!: Observable<Array<Product>>;
+  @Select(ProductSelectors.getProductsByCategory('women'))
+  womenProducts$!: Observable<Array<Product>>;
+  @Select(ProductSelectors.getProductsByCategory('kids'))
+  kidsProducts$!: Observable<Array<Product>>;
+
+  ngOnInit(): void {
+    this.store.dispatch(new FetchProducts());
+  }
 }

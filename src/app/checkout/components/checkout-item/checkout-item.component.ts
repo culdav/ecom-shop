@@ -1,11 +1,11 @@
-import {
-  RemoveCheckoutItem,
-  ClearCheckoutItem,
-  AddCheckoutItem,
-} from './../../../shared/redux/checkout/checkout.actions';
 import { Store } from '@ngxs/store';
 import { Component, Input, OnInit } from '@angular/core';
-import { CheckoutItem } from '@app/shared/model';
+import {
+  CheckoutItem,
+  AddCheckoutItem,
+  RemoveCheckoutItem,
+  ClearCheckoutItem,
+} from '@redux/checkout';
 
 @Component({
   selector: 'app-checkout-item',
@@ -25,7 +25,7 @@ export class CheckoutItemComponent implements OnInit {
   }
 
   removeItem(): void {
-    this.store.dispatch(new RemoveCheckoutItem(this.item.product.id));
+    this.store.dispatch(new RemoveCheckoutItem(this.item.product));
   }
 
   clearItem(): void {

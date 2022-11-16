@@ -1,4 +1,4 @@
-import { AppState } from './shared/redux/app.state';
+import { shopState } from './shared/redux/index';
 import { CoreModule } from './core/core.module';
 import { AuthService } from './core/auth.service';
 import { NgModule } from '@angular/core';
@@ -30,7 +30,7 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
     AngularFirestoreModule,
     AngularFireStorageModule,
     AngularFireDatabaseModule,
-    NgxsModule.forRoot([AppState], {
+    NgxsModule.forRoot(shopState, {
       developmentMode: !environment.production,
     }),
     NgxsReduxDevtoolsPluginModule.forRoot(),

@@ -1,6 +1,15 @@
-.grid-container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 70vw;
-  height: 100%;
+.checkout-container {
+  display: flex;
+  flex-direction: column;
+
+  .grid-container {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70vw;
+    height: 100%;
+  }
+
+  .footer-label {
+    align-self: center;
+  }
 }

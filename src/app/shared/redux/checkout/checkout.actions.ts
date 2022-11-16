@@ -1,4 +1,4 @@
-import { Product } from '@app/shared/model';
+import { Product } from '../product/product.model';
 export class AddCheckoutItem {
   static readonly type = '[Checkout] Add item';
 
@@ -8,7 +8,7 @@ export class AddCheckoutItem {
 export class RemoveCheckoutItem {
   static readonly type = '[Checkout] Remove item';
 
-  constructor(public productId: number) {}
+  constructor(public product: Product) {}
 }
 
 export class ClearCheckoutItem {

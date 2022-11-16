@@ -1,5 +1,4 @@
-import { User } from './../shared/model/user.model';
-import { ClearUser, SetUser } from './../shared/redux/user/user.actions';
+import { User, ClearUser, SetUser } from '@redux/user';
 import { Store } from '@ngxs/store';
 import { Injectable } from '@angular/core';
 import * as auth from 'firebase/auth';
@@ -80,6 +79,7 @@ export class AuthService {
           id: user.uid,
           email: user.email || '',
           displayName: user.displayName || '',
+          loggedIn: true,
         };
         this.store.dispatch(new SetUser(currentUser));
       } else {
