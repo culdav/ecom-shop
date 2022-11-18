@@ -6,6 +6,7 @@
       <p>
         <mat-form-field>
           <input
+            [errorHighlight]="displayNameError != ''"
             type="text"
             matInput
             placeholder="Display name"
@@ -13,9 +14,13 @@
           />
         </mat-form-field>
       </p>
+      <p *ngIf="displayNameError" class="error">
+        {{ displayNameError }}
+      </p>
       <p>
         <mat-form-field>
           <input
+            [errorHighlight]="emailError != ''"
             type="text"
             matInput
             placeholder="Email"
@@ -23,7 +28,9 @@
           />
         </mat-form-field>
       </p>
-
+      <p *ngIf="emailError" class="error">
+        {{ emailError }}
+      </p>
       <p>
         <mat-form-field>
           <input
@@ -46,8 +53,8 @@
         </mat-form-field>
       </p>
 
-      <p *ngIf="error" class="error">
-        {{ error }}
+      <p *ngIf="confirmPasswordError" class="error">
+        {{ confirmPasswordError }}
       </p>
     </form>
   </mat-card-content>
