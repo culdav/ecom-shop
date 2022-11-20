@@ -1,86 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { AuthService } from '@app/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {
-  combineLatest,
-  debounceTime,
-  startWith,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+  forbiddenNameValidator,
+  samePasswordValidator,
+} from '@app/auth/components/validators';
+import { AuthService } from '@app/core';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-
-  displayNameError = '';
-  emailError = '';
-  confirmPasswordError = '';
-
-  form: FormGroup = new FormGroup({
-    displayName: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    confirmPassword: new FormControl(''),
-  });
+export class SignUpComponent implements OnInit {
+  form!: FormGroup;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit(): void {
-    this.form
-      .get('displayName')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((displayName) => {
-        if (displayName !== '') {
-          var format = /^[^a-zA-Z]+$/;
-          format.test(displayName)
-            ? (this.displayNameError =
-                'Display name cannot start with special characters or numbers.')
-            : (this.displayNameError = '');
-        } else {
-          this.displayNameError = '';
-        }
-      });
-
-    this.form
-      .get('email')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((email) => {
-        if (email !== '') {
-          var format = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          format.test(email)
-            ? (this.emailError = '')
-            : (this.emailError = 'Please enter a valid email.');
-        } else {
-          this.emailError = '';
-        }
-      });
-
-    this.form
-      .get('password')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((password) => {
-        if (this.form.value.confirmPassword === password) {
-          this.confirmPasswordError = '';
-        } else {
-          this.confirmPasswordError = 'Passwords do not match.';
-        }
-      });
-
-    this.form
-      .get('confirmPassword')
-      ?.valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((confirmPassword) => {
-        if (this.form.value.password === confirmPassword) {
-          this.confirmPasswordError = '';
-        } else {
-          this.confirmPasswordError = 'Passwords do not match.';
-        }
-      });
+    this.initForm();
   }
 
   signUp(): void {
@@ -91,7 +28,42 @@ export class SignUpComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
+  get displayName() {
+    return this.form.get('displayName');
+  }
+
+  get email() {
+    return this.form.get('email');
+  }
+
+  get password() {
+    return this.form.get('password');
+  }
+
+  get confirmPassword() {
+    return this.form.get('confirmPassword');
+  }
+
+  private initForm(): void {
+    this.form = new FormGroup(
+      {
+        displayName: new FormControl('', {
+          validators: [
+            Validators.required,
+            forbiddenNameValidator(/^[^a-zA-Z]+$/),
+          ],
+        }),
+        email: new FormControl('', {
+          validators: [Validators.required, Validators.email],
+        }),
+        password: new FormControl('', {
+          validators: [Validators.required],
+        }),
+        confirmPassword: new FormControl('', {
+          validators: [Validators.required],
+        }),
+      },
+      { validators: [samePasswordValidator] }
+    );
   }
 }

@@ -6,7 +6,6 @@
       <p>
         <mat-form-field>
           <input
-            [errorHighlight]="displayNameError != ''"
             type="text"
             matInput
             placeholder="Display name"
@@ -14,13 +13,13 @@
           />
         </mat-form-field>
       </p>
-      <p *ngIf="displayNameError" class="error">
-        {{ displayNameError }}
-      </p>
+
+      <div *ngIf="displayName?.errors?.['forbiddenName']" class="error">
+        Name cannot start with numbers or special characters.
+      </div>
       <p>
         <mat-form-field>
           <input
-            [errorHighlight]="emailError != ''"
             type="text"
             matInput
             placeholder="Email"
@@ -28,9 +27,10 @@
           />
         </mat-form-field>
       </p>
-      <p *ngIf="emailError" class="error">
-        {{ emailError }}
-      </p>
+
+      <div *ngIf="email?.errors?.['email']" class="error">
+        Email should have a valid format.
+      </div>
       <p>
         <mat-form-field>
           <input
@@ -53,14 +53,19 @@
         </mat-form-field>
       </p>
 
-      <p *ngIf="confirmPasswordError" class="error">
-        {{ confirmPasswordError }}
-      </p>
+      <div *ngIf="form?.errors?.['confirmPassword']" class="error">
+        Passwords should be the same.
+      </div>
     </form>
   </mat-card-content>
   <mat-card-actions>
     <div class="actions-container">
-      <button mat-raised-button type="submit" (click)="signUp()">
+      <button
+        mat-raised-button
+        type="submit"
+        (click)="signUp()"
+        [disabled]="!form.valid"
+      >
         Sign Up
       </button>
     </div>
