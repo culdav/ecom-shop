@@ -7,22 +7,12 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[errorHighlight]',
+  selector: '[errorHighligt]',
 })
-export class ErrorHighlightDirective implements OnChanges {
-  @Input() errorHighlight = false;
-
-  private el!: ElementRef;
-
-  constructor(el: ElementRef) {
-    this.el = el;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['errorHighlight'].currentValue === true) {
-      this.el.nativeElement.style.backgroundColor = 'lightpink';
-    } else {
-      this.el.nativeElement.style.backgroundColor = 'transparent';
-    }
+export class ErrorHighlightDirective {
+  constructor(private el: ElementRef) {
+    this.el.nativeElement.style.backgroundColor = 'lightpink';
+    this.el.nativeElement.style.borderRadius = '10px';
+    this.el.nativeElement.style.padding = '3px';
   }
 }
