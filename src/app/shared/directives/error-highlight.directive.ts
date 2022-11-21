@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 
 @Directive({
-  selector: '[errorHighligt]',
+  selector: '[appErrorHighligt]',
 })
 export class ErrorHighlightDirective {
   constructor(private el: ElementRef) {
